@@ -14,14 +14,15 @@ var WidgetMixin = require('../mixins/WidgetMixin.js');
 
 module.exports = createReactClass({
   mixins: [WidgetMixin],
-  
+
   getDefaultProps() {
     return ({
       // onChange: null,
       type: 'OptionWidget',
+      isSelected: false,
     });
   },
-  
+
   _renderCheckmark() {
     if (this.state.value === true) {
       return (
@@ -39,7 +40,7 @@ module.exports = createReactClass({
     if (this.props.multiple === false) {
       this.props.unSelectAll();
       this._onChange(true);
-      
+
       if (typeof this.props.onSelect === 'function') {
         // console.log('onSelect');
         this.props.onSelect(this.props.value);
@@ -49,7 +50,8 @@ module.exports = createReactClass({
         this.props.onClose(this.props.title, this.props.navigator);
       }
     } else {
-      this._onChange(!this.state.value)
+      const val = typeof this.state.value === "boolean" && this.state.value;
+      this._onChange(!val)
     }
   },
   
@@ -104,4 +106,3 @@ module.exports = createReactClass({
     },
   },
 });
-

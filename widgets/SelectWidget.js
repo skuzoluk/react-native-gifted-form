@@ -3,6 +3,7 @@ import createReactClass from 'create-react-class';
 import {
   View,
 } from 'react-native';
+import GiftedFormManager from '../GiftedFormManager';
 
 var WidgetMixin = require('../mixins/WidgetMixin.js');
 
@@ -16,6 +17,7 @@ module.exports = createReactClass({
       multiple: false,
       onSelect: () => {},
       onClose: () => {},
+      onSetOptionTitleList: () => {},
     };
   },
 
@@ -26,9 +28,11 @@ module.exports = createReactClass({
   },
 
   render() {
+    const titleList = [];
+    var fieldVal = GiftedFormManager.getValue(this.props.formName, this.props.name)
     this._childrenWithProps = React.Children.map(this.props.children, (child, idx) => {
       var val = child.props.value || child.props.title;
-
+      titleList[child.props.value] = child.props.title;
       return React.cloneElement(child, {
         formStyles: this.props.formStyles,
         openModal: this.props.openModal,
@@ -39,6 +43,8 @@ module.exports = createReactClass({
         onValidation: this.props.onValidation,
         onValueChange: this.props.onValueChange,
 
+        isSelected: fieldVal && Array.isArray(fieldVal) && fieldVal.indexOf(val) >= 0,
+        fieldVal,
         name: this.props.name+'{'+val+'}',
         ref: this.props.name+'{'+val+'}',
         value: val,
@@ -49,7 +55,7 @@ module.exports = createReactClass({
         onSelect: this.props.onSelect, // got from DayPickerWidget
       });
     });
-
+    this.props.onSetOptionTitleList(titleList);
     return (
       <View>
         {this._childrenWithProps}

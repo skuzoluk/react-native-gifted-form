@@ -52,7 +52,7 @@ module.exports = {
   componentDidMount() {
     // get value from prop
     if (typeof this.props.value !== 'undefined') {
-      this._setValue(this.props.value);
+      this._setValue(this.props.value, true);
       return;
     }
     // get value from store
@@ -70,6 +70,12 @@ module.exports = {
   componentWillReceiveProps(nextProps) {
     if (typeof nextProps.value !== 'undefined' && nextProps.value !== this.props.value) {
       this._onChange(nextProps.value);
+    }
+  },
+
+  componentDidUpdate(prevProps) {
+    if (this.props.type === 'OptionWidget' && typeof this.state.value !== "boolean" && this.props.isSelected) {
+      this.setState( prevState => ({ ...prevState, value: true }));
     }
   },
 
@@ -138,11 +144,27 @@ module.exports = {
     }
   },
 
-  _setValue(value) {
-    this.setState({
-      value: value
-    });
-    GiftedFormManager.updateValue(this.props.formName, this.props.name, value);
+  _setValue(value, isMount=false) {
+    if (this.props.type === 'OptionWidget') {
+      const fieldVal = this.props.fieldVal;
+      if (isMount) {
+        if (fieldVal) {
+          this.setState({
+            value: fieldVal.indexOf(value) >= 0
+          });
+        }
+      } else {
+        this.setState({
+          value: value
+        });
+        GiftedFormManager.updateValue(this.props.formName, this.props.name, value);
+      }
+    } else {
+      this.setState({
+        value: value
+      });
+      GiftedFormManager.updateValue(this.props.formName, this.props.name, value);
+    }
   },
 
   _onChange(value, onChangeText = true) {
