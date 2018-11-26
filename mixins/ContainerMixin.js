@@ -26,6 +26,7 @@ module.exports = {
       scrollEnabled: true,
       formStyles: {},
       navigator: null, // @todo test when null if crash
+      locale: 'en',
     }
   },
 
@@ -102,6 +103,7 @@ module.exports = {
           formName: this.props.formName,
           form: this,
           navigator: this.props.navigator,
+          locale: this.props.locale,
           onFocus: this.handleFocus,
           onBlur: this.handleBlur,
           onValidation: this.handleValidation,
