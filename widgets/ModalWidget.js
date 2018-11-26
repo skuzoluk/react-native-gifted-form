@@ -168,6 +168,7 @@ module.exports = createReactClass({
         onBlur: this.props.onBlur,
         onValidation: this.props.onValidation,
         onValueChange: this.props.onValueChange,
+        onSetOptionTitleList: this.onSetOptionTitleList,
 
         onClose: this.onClose,
       });
@@ -204,6 +205,10 @@ module.exports = createReactClass({
     });
   },
 
+  onSetOptionTitleList(list) {
+    this.titleList = list;
+  },
+
   _getDisplayableValue() {
     if (this.props.displayValue !== '') {
       if (typeof GiftedFormManager.stores[this.props.formName] !== 'undefined') {
@@ -236,9 +241,9 @@ module.exports = createReactClass({
                   return this.props.transformValue(values[this.props.displayValue]);
                 } else {
                   if (Array.isArray(values[this.props.displayValue])) {
-                    // @todo
-                    // should return the title and not the value in case of select menu
-                    return values[this.props.displayValue].join(', ');
+
+                    return values[this.props.displayValue].map(item => this.titleList[item]).join(', ');
+                    //return values[this.props.displayValue].join(', ');
                   } else if (values[this.props.displayValue] instanceof Date) {
                     return moment(values[this.props.displayValue]).calendar(null, {
                       sameDay: '[Today]',
@@ -277,7 +282,6 @@ module.exports = createReactClass({
         <View style={this.getStyle('row')}>
           {this._renderImage()}
           {this._renderCustomValidationView()}
-
           <Text numberOfLines={1} style={this.getStyle('modalTitle')}>{this.props.title}</Text>
           <View style={this.getStyle('alignRight')}>
             <Text numberOfLines={1} style={this.getStyle('modalValue')}>{this.state.value}</Text>
