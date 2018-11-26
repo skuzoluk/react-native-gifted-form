@@ -13,6 +13,7 @@ module.exports = createReactClass({
   getDefaultProps() {
     return {
       type: 'GroupWidget',
+      locale: 'en'
       // @todo proptypes
     };
   },
@@ -39,7 +40,7 @@ module.exports = createReactClass({
                 style={this.getStyle('headerTitle')}
                 {...this.props}
             >
-              {this.props.title.toUpperCase()}
+                {this.props.title.toLocaleUpperCase(this.props.locale)}
             </Text>
             {childrenWithProps}
 
