@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 
-
 var GiftedFormManager = require('../GiftedFormManager');
 
 module.exports = {
@@ -70,6 +69,13 @@ module.exports = {
   componentWillReceiveProps(nextProps) {
     if (typeof nextProps.value !== 'undefined' && nextProps.value !== this.props.value) {
       this._onChange(nextProps.value);
+    }
+    
+    if (typeof nextProps.value !== 'undefined' && nextProps.value !== null &&
+      (this.props.value !== nextProps.value || nextProps.value !== this.state.value)) {
+      console.log('update:',this.props.name, nextProps.value);
+      this._setValue(nextProps.value, false);
+      this._validate(nextProps.value);
     }
   },
 
