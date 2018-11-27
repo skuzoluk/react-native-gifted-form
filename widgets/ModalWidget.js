@@ -205,8 +205,9 @@ module.exports = createReactClass({
     });
   },
 
-  onSetOptionTitleList(list) {
-    this.titleList = list;
+  _loadOptionTitleList() {
+    this.titleList = []
+    this.props.children.props.children.map(child => this.titleList[child.props.value] = child.props.title);
   },
 
   _getDisplayableValue() {
@@ -241,7 +242,9 @@ module.exports = createReactClass({
                   return this.props.transformValue(values[this.props.displayValue]);
                 } else {
                   if (Array.isArray(values[this.props.displayValue])) {
-
+                    if (typeof this.titleList === 'undefined') {
+                      this._loadOptionTitleList();
+                    }
                     return values[this.props.displayValue].map(item => this.titleList[item]).join(', ');
                     //return values[this.props.displayValue].join(', ');
                   } else if (values[this.props.displayValue] instanceof Date) {
