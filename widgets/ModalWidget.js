@@ -28,6 +28,8 @@ module.exports = createReactClass({
       disclosure: true,
       cancelable: false,
       displayValue: '',
+      nullDisplayValue: true,
+      showDoneButton: true,
       onClose: () => {}
     };
   },
@@ -37,6 +39,8 @@ module.exports = createReactClass({
     scrollEnabled: PropTypes.bool,
     disclosure: PropTypes.bool,
     cancelable: PropTypes.bool,
+    showDoneButton: PropTypes.bool,
+    nullDisplayValue: PropTypes.bool,
     displayValue: PropTypes.string,
     onClose: PropTypes.func
   },
@@ -74,6 +78,7 @@ module.exports = createReactClass({
 
 
     var route = {
+      showDoneButton: this.props.showDoneButton,
       onClose: _self.onClose,
       renderScene(navigator) {
         // not passing onFocus/onBlur of the current scene to the new scene
@@ -186,7 +191,7 @@ module.exports = createReactClass({
       this.setState({
         value: value,
       });
-    } else if (this.props.displayValue !== '') {
+    } else if (this.props.displayValue !== '' && (value !== null || this.props.nullDisplayValue)) {
       this.setState({
         value: this._getDisplayableValue(),
       });
