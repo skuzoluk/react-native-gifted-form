@@ -73,7 +73,6 @@ module.exports = {
     
     if (typeof nextProps.value !== 'undefined' && nextProps.value !== null &&
       (this.props.value !== nextProps.value || nextProps.value !== this.state.value)) {
-      console.log('update:',this.props.name, nextProps.value);
       this._setValue(nextProps.value, false);
       this._validate(nextProps.value);
     }
