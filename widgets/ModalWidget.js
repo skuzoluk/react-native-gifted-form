@@ -211,8 +211,10 @@ module.exports = createReactClass({
   },
 
   _loadOptionTitleList() {
-    this.titleList = []
-    this.props.children.props.children.map(child => this.titleList[child.props.value] = child.props.title);
+    this.titleList = [];
+    if (this.props.children.props.children) {
+      this.props.children.props.children.map(child => this.titleList[child.props.value] = child.props.title);
+    }
   },
 
   _getDisplayableValue() {
